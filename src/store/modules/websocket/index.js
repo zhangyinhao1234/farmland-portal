@@ -10,17 +10,17 @@ export default {
   mutations: {
     INIT: (state, token) => {
       const url = process.env.VUE_APP_WS_URL + token
-      state.socket = new WebsocketClass(url, data => {
-        state.response = data
-        switch (data.type) {
-          case -1:
-            break
-          default:
-            console.log('🚲~~:', data)
-            break
-        }
-      })
-      state.socket.connect()
+      // state.socket = new WebsocketClass(url, data => {
+      //   state.response = data
+      //   switch (data.type) {
+      //     case -1:
+      //       break
+      //     default:
+      //       console.log('🚲~~:', data)
+      //       break
+      //   }
+      // })
+      // state.socket.connect()
     },
     SEND: (state, data) => {
       const params = {

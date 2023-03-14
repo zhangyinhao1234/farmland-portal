@@ -8,6 +8,7 @@ export const ContentType = {
 // 令牌键值
 export const TokenKey = {
   TOKEN: 'token',
+  USERID: 'userId',
   ACCESS: 'access'
 }
 // 本地存储类型
@@ -21,9 +22,9 @@ export const SuccessCode = {
   ZERO: 0,
   TWO_HUNDRED: 200
 }
-// 请求 mapping
+// 请求 mapping TODO 可以设置请求前缀
 export const RequestMapping = {
-  SLIPPER: '/slipper',
+  SLIPPER: '',
   API: '/api'
 }
 // 双向绑定名

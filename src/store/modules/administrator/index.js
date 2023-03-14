@@ -14,22 +14,19 @@ import { selfInfoApi } from '@/api/administrator'
 export default {
   state: {
     administrator: {
-      id: '',
-      username: '',
-      nickname: '',
-      avatar: '',
-      mobile: '',
+      userName: '',
+      userId: '',
       email: '',
-      status: '',
-      roles: [],
-      supervisor: '',
-      enterprise_id: ''
+      roleCodes: []
     },
     token: getToken()
   },
   getters: {
     tokenVal: state => {
       return state.token.token
+    },
+    userIdVal: state => {
+      return state.token.userId
     }
   },
   mutations: {

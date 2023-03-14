@@ -16,8 +16,8 @@ import service from '@/utils/request'
  */
 export function selfInfoApi() {
   return service({
-    url: '/admin/enterprise/menu/self/info',
-    method: 'get'
+    url: '/user/resTree',
+    method: 'post'
   })
 }
 

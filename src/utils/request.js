@@ -3,7 +3,7 @@ import axios from 'axios'
 import qs from 'qs'
 import router from '@/router'
 import store from '@/store'
-import { CONTENT_TYPE, SUCCESS_CODE, TIME_OUT, TOKEN_KEY } from '@/utils/constant'
+import { CONTENT_TYPE, SUCCESS_CODE, TIME_OUT, TOKEN_KEY,USERID_KEY } from '@/utils/constant'
 import { ContentType } from '@/utils/dictionary'
 import { getApiBaseUrl } from '@/utils'
 import Prompt from '@/utils/prompt'
@@ -86,8 +86,10 @@ const service = axios.create({
 service.interceptors.request.use(
   config => {
     const tokenVal = store.getters['administrator/tokenVal']
+    const userIdVal = store.getters['administrator/userIdVal']
     if (tokenVal) {
       config.headers[TOKEN_KEY] = tokenVal
+      config.headers[USERID_KEY] = userIdVal
     }
     if (config.data) {
       if (config.headers['Content-Type'] === ContentType.FORM) {

@@ -47,12 +47,7 @@ export default defineComponent({
     })
 
     const getList = async () => {
-      const r = await visitsApi()
-      if (r) {
-        data.list = r.data
-      } else {
         data.list = []
-      }
     }
 
     const init = async () => {

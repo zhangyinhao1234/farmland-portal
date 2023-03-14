@@ -10,27 +10,6 @@ import service from '@/utils/request'
 import { parseJson2Param } from '@/utils/index'
 import { getApiBaseUrl } from '@/utils'
 
-/**
- * @description: 验证码
- * @param {*} params
- * @return {*}
- * @author: gumingchen
- */
-export function captchaApi(params) {
-  // let result = ''
-  // const options = {
-  //   url: '/admin/captcha.jpeg',
-  //   method: 'get',
-  //   params: params
-  // }
-  // result = `${ getApiBaseUrl() + options.url }?${ parseJson2Param(options.params) }`
-  // return result
-  return service({
-    url: '/admin/captcha.jpeg',
-    method: 'get',
-    params: params
-  })
-}
 
 /**
  * @description: 登录
@@ -40,7 +19,7 @@ export function captchaApi(params) {
  */
 export function loginApi(params) {
   return service({
-    url: '/admin/login',
+    url: '/user/login',
     method: 'post',
     data: params
   })

@@ -8,6 +8,8 @@ export const CONTENT_TYPE = ContentType.JSON
 export const TIME_OUT = 60000 * 2
 // 访问秘钥 存储
 export const TOKEN_KEY = TokenKey.TOKEN
+// 用户ID 存储
+export const USERID_KEY = TokenKey.USERID
 // 秘钥本地存储类型
 export const TOKEN_STORAGE = StorageType.COOKIE
 // 菜单本地存储类型

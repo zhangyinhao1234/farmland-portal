@@ -29,10 +29,7 @@ export default {
      * @returns
      */
     async getEnterprise({ commit }) {
-      const r = await selfInfoApi()
-      if (r) {
-        commit('SET_ENTERPRISE', r.data)
-      }
+      const r = {id:'1',name:'',logo:''}
       return r
     }
   }

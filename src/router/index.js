@@ -166,9 +166,10 @@ router.beforeEach(async (to, _from, next) => {
   document.title = to.meta.title_cn || document.title
   // 跳转到登录页如果 token 还未过期则调整到系统内部
   if (to.name === 'login') {
-    const { expired_at } = store.state.administrator.token
+    const { expiredAt } = store.state.administrator.token
+    console.info("在路由处获取token信息:"+JSON.stringify(store.state.administrator.token))
     const now = +new Date()
-    const expired = expired_at ? +parseStr2Date(expired_at) : 0
+    const expired = expiredAt ? +parseStr2Date(expiredAt) : 0
     if (expired > now) {
       next({ name: 'redirect', replace: true })
     }

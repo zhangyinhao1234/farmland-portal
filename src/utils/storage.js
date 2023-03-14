@@ -76,9 +76,14 @@ function clear(key, storage) {
  * @author: gumingchen
  */
 export function getToken() {
+
+  console.info("获取token信息:"+get(TOKEN_KEY, TOKEN_STORAGE))
+
+
   return JSON.parse(get(TOKEN_KEY, TOKEN_STORAGE) || '{}')
 }
 export function setToken(token) {
+  console.info("设置token信息:"+JSON.stringify(token))
   set(TOKEN_KEY, token, TOKEN_STORAGE)
 }
 export function clearToken() {

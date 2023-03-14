@@ -17,8 +17,8 @@ import { download } from '@/utils'
  */
 export function selfInfoApi() {
   return service({
-    url: '/admin/administrator/self/info',
-    method: 'get'
+    url: '/user/selfInfo',
+    method: 'post'
   })
 }
 

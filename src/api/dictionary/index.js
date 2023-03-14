@@ -183,7 +183,7 @@ export function subSetStatusApi(params) {
  */
 export function subSelectListApi(params) {
   return service({
-    url: `/admin/dictionary/sub/select/list/${ params }`,
+    url: `/meta/dict/sub/list/${ params }`,
     method: 'get'
   })
 }
