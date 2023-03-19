@@ -22,6 +22,14 @@ export function pageApi(params) {
   })
 }
 
+export function rolePageApi(params) {
+  return service({
+    url: '/meta/role/page',
+    method: 'post',
+    data: params
+  })
+}
+
 /**
  * @description: 信息
  * @param {*}

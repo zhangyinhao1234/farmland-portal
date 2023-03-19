@@ -151,6 +151,53 @@ export async function exportApi(params) {
   }
 }
 
+
+/**
+ * @description: 用户服务角色绑定信息查询
+ * @param {*}
+ * @return {*}
+ * @author: gumingchen
+ */
+export function userRolePageApi(params) {
+  return service({
+    url: `/meta/user/app/role/page`,
+    method: 'post',
+    data: params
+  })
+}
+
+/**
+ * @description: 用户服务角色绑定信息保存
+ * @param {*}
+ * @return {*}
+ * @author: gumingchen
+ */
+export function userRoleSaveApi(params) {
+  return service({
+    url: `/meta/user/app/role/save`,
+    method: 'post',
+    data: params
+  })
+}
+
+/**
+ * @description: 用户服务角色绑定信息删除
+ * @param {*}
+ * @return {*}
+ * @author: gumingchen
+ */
+export function userRoleDelApi(params) {
+  return service({
+    url: `/meta/user/app/role/del`,
+    method: 'post',
+    data: params
+  })
+}
+
+
+
+
+
 // todo:------------------------------------------------------------------------------------
 
 /**
