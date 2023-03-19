@@ -22,6 +22,73 @@ export function selfInfoApi() {
   })
 }
 
+
+
+/**
+ * @description: 编辑密码
+ * @param {*}
+ * @return {*}
+ * @author: gumingchen
+ */
+export function editPasswordApi(params) {
+  return service({
+    url: `/meta/user/pwd`,
+    method: 'post',
+    data: params
+  })
+}
+
+/**
+ * @description: 超级管理员获取当前企业下的所有管理员 否则 获取当前管理员创建的管理员
+ * @param {*}
+ * @return {*}
+ * @author: gumingchen
+ */
+export function pageApi(params) {
+  return service({
+    url: '/meta/user/page',
+    method: 'post',
+    data: params
+  })
+}
+
+/**
+ * @description: 信息
+ * @param {*}
+ * @return {*}
+ * @author: gumingchen
+ */
+export function infoApi(params) {
+  
+}
+
+/**
+ * @description: 新增
+ * @param {*}
+ * @return {*}
+ * @author: gumingchen
+ */
+export function addApi(params) {
+  return service({
+    url: `/meta/user/save`,
+    method: 'post',
+    data: params
+  })
+}
+
+/**
+ * @description: 编辑
+ * @param {*}
+ * @return {*}
+ * @author: gumingchen
+ */
+export function editApi(params) {
+  return service({
+    url: `/meta/user/update`,
+    method: 'post',
+    data: params
+  })
+}
 /**
  * @description: 编辑基础信息
  * @param {*}
@@ -36,74 +103,6 @@ export function editBasicApi(params) {
   })
 }
 
-/**
- * @description: 编辑密码
- * @param {*}
- * @return {*}
- * @author: gumingchen
- */
-export function editPasswordApi(params) {
-  return service({
-    url: `/admin/administrator/update/password`,
-    method: 'post',
-    data: params
-  })
-}
-
-/**
- * @description: 超级管理员获取当前企业下的所有管理员 否则 获取当前管理员创建的管理员
- * @param {*}
- * @return {*}
- * @author: gumingchen
- */
-export function pageApi(params) {
-  return service({
-    url: '/admin/administrator/page',
-    method: 'get',
-    params: params
-  })
-}
-
-/**
- * @description: 信息
- * @param {*}
- * @return {*}
- * @author: gumingchen
- */
-export function infoApi(params) {
-  return service({
-    url: `/admin/administrator/info/${ params }`,
-    method: 'get'
-  })
-}
-
-/**
- * @description: 新增
- * @param {*}
- * @return {*}
- * @author: gumingchen
- */
-export function addApi(params) {
-  return service({
-    url: `/admin/administrator/create`,
-    method: 'post',
-    data: params
-  })
-}
-
-/**
- * @description: 编辑
- * @param {*}
- * @return {*}
- * @author: gumingchen
- */
-export function editApi(params) {
-  return service({
-    url: `/admin/administrator/update`,
-    method: 'post',
-    data: params
-  })
-}
 
 /**
  * @description: 删除
@@ -113,7 +112,7 @@ export function editApi(params) {
  */
 export function deleteApi(params) {
   return service({
-    url: `/admin/administrator/delete`,
+    url: `/meta/user/del`,
     method: 'post',
     data: params
   })

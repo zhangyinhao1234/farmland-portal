@@ -11,30 +11,15 @@
     <template #header>
       <el-form ref="refForm" :inline="true" @keyup.enter="reacquireHandle()">
         <el-form-item>
-          <el-input v-model="form.name" placeholder="用户名/昵称" clearable />
+          <el-input v-model="form.userName" placeholder="用户名/昵称" clearable />
         </el-form-item>
-        <el-form-item>
-          <el-input v-model="form.department" placeholder="部门" clearable />
-        </el-form-item>
-        <el-form-item>
-          <el-date-picker
-            v-model="form.date"
-            type="daterange"
-            range-separator="-"
-            start-placeholder="创建开始日期"
-            end-placeholder="创建结束日期"
-            clearable />
-        </el-form-item>
+
         <el-form-item>
           <el-button v-repeat @click="reacquireHandle()">搜索</el-button>
           <el-button v-repeat @click="clearJson(form), reacquireHandle()">重置</el-button>
-          <el-button v-permission="'administrator:create'" type="primary" @click="addEditHandle()">新增</el-button>
-          <el-button v-permission="'administrator:export'" type="primary" @click="exportHandle()">导出</el-button>
-          <el-button
-            v-permission="'administrator:delete'"
-            type="danger"
-            :disabled="selection.length <= 0"
-            @click="deleteHandle()">批量删除</el-button>
+          <el-button v-permission="'system:administrator:create'" type="primary" @click="addEditHandle()">新增</el-button>
+          <!-- <el-button v-permission="'administrator:export'" type="primary" @click="exportHandle()">导出</el-button> -->
+          
         </el-form-item>
       </el-form>
     </template>
@@ -51,56 +36,25 @@
           label="ID"
           prop="id"
           width="80" />
+        
         <el-table-column
           align="center"
-          label="头像"
-          prop="avatar"
-          width="80">
-          <template v-slot="{ row }">
-            <el-avatar :size="50" :src="row.avatar" v-if="row.avatar" />
-            <span v-else>-</span>
-          </template>
-        </el-table-column>
+          label="工号"
+          prop="userId" />
+
         <el-table-column
           align="center"
           label="用户名"
-          prop="username" />
-        <el-table-column
-          align="center"
-          label="昵称"
-          prop="nickname" />
-        <el-table-column
-          align="center"
-          label="手机号"
-          prop="mobile" />
+          prop="userName" />
+        
+        
         <el-table-column
           align="center"
           label="电子邮箱"
           prop="email" />
-        <el-table-column
-          align="center"
-          label="性别"
-          prop="sex">
-          <template v-slot="{row}">
-            {{ row.sex_dict }}
-          </template>
-        </el-table-column>
-        <el-table-column
-          align="center"
-          label="部门"
-          prop="department_name">
-          <template v-slot="{ row }">
-            {{row.department_name || '-'}}
-          </template>
-        </el-table-column>
-        <el-table-column
-          align="center"
-          label="角色"
-          prop="email">
-          <template v-slot="{ row }">
-            <el-tag v-for="item in row.roles" :key="item.id">{{item.name}}</el-tag>
-          </template>
-        </el-table-column>
+        
+        
+        
         <el-table-column
           align="center"
           label="是否启用"
@@ -115,17 +69,13 @@
               :inactive-value="0"
               :disabled="row.id === administratorId" />
           </template>
-        </el-table-column>
+        </el-table-column> 
         <el-table-column
           align="center"
           label="创建时间"
-          prop="created_at"
+          prop="createTime"
           width="160" />
-        <el-table-column
-          align="center"
-          label="更新时间"
-          prop="updated_at"
-          width="160" />
+        
         <el-table-column
           align="center"
           label="操作"
@@ -133,15 +83,15 @@
           fixed="right">
           <template v-slot="{ row }">
             <el-button
-              v-permission="'administrator:update'"
+              v-permission="'system:administrator:update'"
               type="primary"
               link
-              @click="addEditHandle(row.id)">编辑</el-button>
+              @click="addEditHandle(row)">编辑</el-button>
             <el-button
-              v-permission="'administrator:delete'"
+              v-permission="'system:administrator:delete'"
               type="danger"
               link
-              @click="deleteHandle(row.id)">删除</el-button>
+              @click="deleteHandle(row.userId)">删除</el-button>
           </template>
         </el-table-column>
       </el-table>
@@ -181,9 +131,7 @@ export default defineComponent({
       loading: false,
       visible: false,
       form: {
-        name: '',
-        department: '',
-        date: []
+        userName: ''
       },
       list: [],
       selection: []
@@ -193,10 +141,7 @@ export default defineComponent({
 
     const getList = () => {
       const params = {
-        name: data.form.name,
-        department: data.form.department,
-        start: data.form.date && data.form.date.length > 0 ? parseDate2Str(data.form.date[0]) : '',
-        end: data.form.date && data.form.date.length > 1 ? parseDate2Str(data.form.date[1]) : '',
+        userName: data.form.userName,
         current: page.current,
         size: page.size
       }
@@ -215,21 +160,21 @@ export default defineComponent({
       getList()
     }
 
-    const addEditHandle = (id) => {
+    const addEditHandle = (row) => {
       data.visible = true
       nextTick(() => {
-        refAddEdit.value.init(id)
+        refAddEdit.value.init(row)
       })
     }
 
     const deleteHandle = (id) => {
-      const ids = id ? [id] : data.selection.map(item => item.id)
+      const ids = id ? [id] : data.selection.map(item => item.userId)
       ElMessageBox.confirm(`确定对[id=${ ids.join(',') }]进行[${ id ? '删除' : '批量删除' }]操作?`, '提示', {
         confirmButtonText: '确认',
         cancelButtonText: '取消',
         type: 'warning'
       }).then(() => {
-        deleteApi({ keys: ids }).then(r => {
+        deleteApi({ userId: id }).then(r => {
           if (r) {
             ElMessage({
               message: '操作成功!',
@@ -244,28 +189,25 @@ export default defineComponent({
     }
 
     const statusHandle = (row) => {
-      const params = {
-        key: row.id,
-        value: row.status
-      }
-      setStatusApi(params).then(r => {
-        if (r) {
-          ElMessage({
-            message: '操作成功!',
-            type: 'success'
-          })
-        } else {
-          row.status = row.status === 1 ? 0 : 1
-        }
-      })
+      // const params = {
+      //   key: row.id,
+      //   value: row.status
+      // }
+      // setStatusApi(params).then(r => {
+      //   if (r) {
+      //     ElMessage({
+      //       message: '操作成功!',
+      //       type: 'success'
+      //     })
+      //   } else {
+      //     row.status = row.status === 1 ? 0 : 1
+      //   }
+      // })
     }
 
     const exportHandle = () => {
       const params = {
-        name: data.form.name,
-        department: data.form.department,
-        start: data.form.date && data.form.date.length > 0 ? parseDate2Str(data.form.date[0]) : '',
-        end: data.form.date && data.form.date.length > 1 ? parseDate2Str(data.form.date[1]) : ''
+        name: data.form.userName
       }
       exportApi(params)
     }
@@ -281,7 +223,7 @@ export default defineComponent({
     }
 
     onBeforeMount(() => {
-      getDictionary('sex')
+      
       getList()
     })
 
