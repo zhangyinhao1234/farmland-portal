@@ -16,9 +16,9 @@ import service from '@/utils/request'
  */
 export function pageApi(params) {
   return service({
-    url: '/admin/role/page',
-    method: 'get',
-    params: params
+    url: '/meta/role/page',
+    method: 'post',
+    data: params
   })
 }
 
@@ -30,10 +30,12 @@ export function pageApi(params) {
  */
 export function infoApi(params) {
   return service({
-    url: `/admin/role/info/${ params }`,
-    method: 'get'
+    url: `/meta/role/info`,
+    method: 'post',
+    data: params
   })
 }
+
 
 /**
  * @description: 新增
@@ -43,21 +45,7 @@ export function infoApi(params) {
  */
 export function addApi(params) {
   return service({
-    url: `/admin/role/create`,
-    method: 'post',
-    data: params
-  })
-}
-
-/**
- * @description: 编辑
- * @param {*}
- * @return {*}
- * @author: gumingchen
- */
-export function editApi(params) {
-  return service({
-    url: `/admin/role/update`,
+    url: `/meta/role/save`,
     method: 'post',
     data: params
   })
@@ -71,7 +59,7 @@ export function editApi(params) {
  */
 export function deleteApi(params) {
   return service({
-    url: `/admin/role/delete`,
+    url: `/meta/role/del`,
     method: 'post',
     data: params
   })
@@ -85,7 +73,7 @@ export function deleteApi(params) {
  */
 export function setShowApi(params) {
   return service({
-    url: `/admin/role/show`,
+    url: `/meta/role/show`,
     method: 'post',
     data: params
   })

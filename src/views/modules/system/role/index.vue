@@ -8,12 +8,8 @@
         <el-form-item>
           <el-button v-repeat @click="reacquireHandle()">搜索</el-button>
           <el-button v-repeat @click="clearJson(form), reacquireHandle()">重置</el-button>
-          <el-button v-permission="'role:create'" type="primary" @click="addEditHandle()">新增</el-button>
-          <el-button
-            v-permission="'role:delete'"
-            type="danger"
-            :disabled="selection.length <= 0"
-            @click="deleteHandle()">批量删除</el-button>
+          <el-button v-permission="'system:role:create'" type="primary" @click="addEditHandle()">新增</el-button>
+        
         </el-form-item>
       </el-form>
     </template>
@@ -34,45 +30,23 @@
           align="center"
           label="角色名称"
           prop="name" />
+        
         <el-table-column
           align="center"
-          label="数据权限"
-          prop="permission_dict"
-          width="190">
-          <template v-slot="{ row }">
-            <el-tag type="success">
-              {{ row.permission_dict }}
-            </el-tag>
-          </template>
-        </el-table-column>
-        <el-table-column
-          align="center"
-          label="备注"
-          prop="remark" />
-        <el-table-column
-          v-if="havePermission('role:show')"
-          align="center"
-          label="是否显示"
-          prop="show"
-          width="160">
-          <template v-slot="{ row }">
-            <el-switch
-              v-permission="'role:show'"
-              @change="showHandle(row)"
-              v-model="row.show"
-              :active-value="1"
-              :inactive-value="0" />
-          </template>
-        </el-table-column>
+          label="角色编码"
+          prop="roleCode" />
+        
+        
         <el-table-column
           align="center"
           label="创建时间"
-          prop="created_at"
+          prop="createTime"
           width="160" />
+
         <el-table-column
           align="center"
           label="更新时间"
-          prop="updated_at"
+          prop="updateTime"
           width="160" />
         <el-table-column
           align="center"
@@ -81,12 +55,12 @@
           fixed="right">
           <template v-slot="{ row }">
             <el-button
-              v-permission="'role:update'"
+              v-permission="'system:role:update'"
               type="primary"
               link
               @click="addEditHandle(row.id)">编辑</el-button>
             <el-button
-              v-permission="'role:delete'"
+              v-permission="'system:role:delete'"
               type="danger"
               link
               @click="deleteHandle(row.id)">删除</el-button>
@@ -125,7 +99,8 @@ export default defineComponent({
       loading: false,
       visible: false,
       form: {
-        name: ''
+        name: '',
+        roleCode: ''
       },
       list: [],
       selection: []
@@ -138,6 +113,7 @@ export default defineComponent({
         size: page.size
       }
       data.loading = true
+      
       pageApi(params).then(r => {
         if (r) {
           data.list = r.data.list,
@@ -145,6 +121,10 @@ export default defineComponent({
         }
         nextTick(() => { data.loading = false })
       })
+
+
+      
+
     }
 
     const reacquireHandle = () => {
@@ -152,10 +132,10 @@ export default defineComponent({
       getList()
     }
 
-    const addEditHandle = (id) => {
+    const addEditHandle = (id_) => {
       data.visible = true
       nextTick(() => {
-        refAddEdit.value.init(id)
+        refAddEdit.value.init({id:id_})
       })
     }
 
@@ -166,7 +146,7 @@ export default defineComponent({
         cancelButtonText: '取消',
         type: 'warning'
       }).then(() => {
-        deleteApi({ keys: ids }).then(r => {
+        deleteApi({ id: id }).then(r => {
           if (r) {
             ElMessage({
               message: '操作成功!',
@@ -208,7 +188,7 @@ export default defineComponent({
     }
 
     onBeforeMount(() => {
-      getDictionary('dataPermission')
+      //getDictionary('dataPermission')
       getList()
     })
 

@@ -21,11 +21,18 @@
           maxlength="20"
           show-word-limit />
       </el-form-item>
-      <el-form-item label="权限" prop="enterprise_menu_ids">
+      <el-form-item label="角色名称" prop="roleCode">
+        <el-input
+          v-model="form.roleCode"
+          placeholder="角色编码"
+          maxlength="20"
+          show-word-limit />
+      </el-form-item>
+      <el-form-item label="权限" prop="menuIds">
         <el-cascader
           class="width-full"
           ref="refCascader"
-          v-model="form.enterprise_menu_ids"
+          v-model="form.menuIds"
           :options="menus"
           :props="cascaderProps"
           :show-all-levels="false"
@@ -33,35 +40,8 @@
           collapse-tags-tooltip
           clearable />
       </el-form-item>
-      <el-form-item label="数据权限" prop="permission">
-        <el-select v-model="form.permission" class="width-full">
-          <el-option
-            v-for="item in dictionaryList"
-            :key="item.value"
-            :value="item.value"
-            :label="item.label" />
-        </el-select>
-      </el-form-item>
-      <el-form-item label="自定义权限" prop="custom" v-show="form.permission === 4">
-        <el-cascader
-          class="width-full"
-          ref="refPermissionCascader"
-          v-model="form.custom"
-          :options="departments"
-          :props="permissionCascaderProps"
-          :show-all-levels="false"
-          collapse-tags
-          collapse-tags-tooltip
-          clearable />
-      </el-form-item>
-      <el-form-item label="备注" prop="remark">
-        <el-input
-          v-model="form.remark"
-          type="textarea"
-          placeholder="备注"
-          maxlength="100"
-          show-word-limit />
-      </el-form-item>
+      
+    
     </el-form>
     <template #footer>
       <span class="dialog-footer">
@@ -82,8 +62,7 @@ import { ElMessage } from 'element-plus'
 
 import useDictionary from '@/mixins/dictionary'
 
-import { selectListApi } from '@/api/enterprise-menu'
-import { selectListApi as departmentSelectApi } from '@/api/department'
+import { metaResTreeApi } from '@/api/enterprise-menu'
 import { infoApi, addApi, editApi } from '@/api/role'
 
 export default defineComponent({
@@ -101,24 +80,25 @@ export default defineComponent({
       form: {
         id: null,
         name: '',
-        permission: '',
+        roleCode:'',
+        permission: 0,
         custom: [],
-        remark: '',
-        enterprise_menu_ids: []
+        menuIds: []
       },
       menus: []
     })
 
     const rules = reactive(function() {
       const checkCustom = (_rule, value, callback) => {
-        if (data.form.permission === 4 && (value.length < 1)) {
-          callback(new Error('请选择自定义数据权限'))
-        } else {
-          callback()
-        }
+        // if (data.form.permission === 4 && (value.length < 1)) {
+        //   callback(new Error('请选择自定义数据权限'))
+        // } else {
+        //   callback()
+        // }
       }
       return {
         name: [{ required: true, message: '请输入角色名称', trigger: 'blur' }],
+        roleCode: [{ required: true, message: '请输入角色编码', trigger: 'blur' }],
         custom: [{ validator: checkCustom, trigger: 'change' }],
         enterprise_menu_ids: [{ type: 'array', required: true, message: '请选择权限', trigger: 'blur' }]
       }
@@ -147,7 +127,7 @@ export default defineComponent({
     })
 
     const getEnterpriseMenu = async () => {
-      const r = await selectListApi()
+      const r = await metaResTreeApi()
       if (r) {
         const list = [{
           id: 0,
@@ -161,27 +141,26 @@ export default defineComponent({
     }
 
     const getDepartment = async () => {
-      const r = await departmentSelectApi({ status: 1 })
-      if (r) {
-        data.departments = r.data
-      }
+      // const r = await departmentSelectApi({ status: 1 })
+      // if (r) {
+      //   data.departments = r.data
+      // }
     }
 
     const init = async (id) => {
       data.visible = true
       data.loading = true
-      data.form.id = id
+      data.form.id = id.id
 
       await getEnterpriseMenu()
-      await getDepartment()
-      if (id) {
+      if (id.id) {
         const r = await infoApi(id)
         if (r) {
           data.form.name = r.data.name
+          data.form.roleCode = r.data.roleCode
           data.form.permission = r.data.permission
-          data.form.custom = r.data.custom ? r.data.custom.split(';').map(item => +item) : []
-          data.form.remark = r.data.remark
-          data.form.enterprise_menu_ids = r.data.enterprise_menu_ids
+          // data.form.custom = r.data.custom ? r.data.custom.split(';').map(item => +item) : []
+          data.form.menuIds = r.data.resIds
         }
       }
 
@@ -204,14 +183,14 @@ export default defineComponent({
           checkedNodes.forEach(item => {
             enterpriseMenuIds.push.apply(enterpriseMenuIds, item.pathValues)
           })
-          params.enterprise_menu_ids = Array.from(new Set(enterpriseMenuIds)).filter(item => item !== 0)
+          params.menuIds = Array.from(new Set(enterpriseMenuIds)).filter(item => item !== 0)
           if (params.permission === 4) {
-            const departmentCheckedNodes = refPermissionCascader.value.getCheckedNodes()
-            params.custom = departmentCheckedNodes.map(item => item.value).join(';')
+            // const departmentCheckedNodes = refPermissionCascader.value.getCheckedNodes()
+            // params.custom = departmentCheckedNodes.map(item => item.value).join(';')
           } else {
             params.custom = ''
           }
-          const r = data.form.id ? await editApi(params) : await addApi(params)
+          const r = await addApi(params)
           if (r) {
             data.visible = false
             ElMessage({
@@ -225,7 +204,7 @@ export default defineComponent({
     }
 
     onBeforeMount(() => {
-      getDictionary('dataPermission')
+      //getDictionary('dataPermission')
     })
 
     /**

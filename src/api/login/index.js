@@ -33,7 +33,7 @@ export function loginApi(params) {
  */
 export function logoutApi() {
   return service({
-    url: '/admin/logout',
+    url: '/user/logout',
     method: 'post'
   })
 }

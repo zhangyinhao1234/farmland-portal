@@ -249,7 +249,7 @@ export default defineComponent({
 
     onBeforeMount(async () => {
       data.statusDictionary = await getDictionary('status')
-      data.permissionDictionary = await getDictionary('dataPermission')
+      //data.permissionDictionary = await getDictionary('dataPermission')
     })
 
     return {

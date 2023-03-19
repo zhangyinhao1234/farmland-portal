@@ -21,6 +21,16 @@ export function selfInfoApi() {
   })
 }
 
+
+export function metaResTreeApi() {
+  return service({
+    url: '/meta/res/resTree',
+    method: 'post'
+  })
+}
+
+
+
 /**
  * @description: 获取当前企业下所有菜单
  * @param {*}
@@ -30,7 +40,7 @@ export function selfInfoApi() {
 export function listApi() {
   return service({
     url: '/admin/enterprise/menu/list',
-    method: 'get'
+    method: 'post'
   })
 }
 
@@ -48,19 +58,6 @@ export function updateApi(params) {
   })
 }
 
-/**
- * @description: 获取管理员在该企业下的菜单权限 非树形 只包括名称 id
- *               超级管理员 返回所有 否则 返回该用户角色下面的所有
- * @param {*}
- * @return {*}
- * @author: gumingchen
- */
-export function selectListApi() {
-  return service({
-    url: '/admin/enterprise/menu/select/list',
-    method: 'get'
-  })
-}
 
 // todo:------------------------------------------------------------------------------------
 
