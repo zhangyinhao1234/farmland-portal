@@ -3,27 +3,26 @@ import service from '@/utils/request'
 import { download } from '@/utils'
 
 
-export function allAcodeSimpleInfoApi(params) {
+export function queryProjectMainDataApi(params) {
   return service({
-    url: '/meta/app/querySimple',
+    url: '/meta/project/page',
+    method: 'post',
+    data: params
+  })
+}
+
+export function saveProjectMainDataApi(params) {
+  return service({
+    url: '/meta/project/save',
     method: 'post',
     data: params
   })
 }
 
 
-
-export function queryAppMainDataApi(params) {
+export function queryProjectSummaryApi(params) {
   return service({
-    url: '/meta/app/page',
-    method: 'post',
-    data: params
-  })
-}
-
-export function saveAppMainDataApi(params) {
-  return service({
-    url: '/meta/app/save',
+    url: 'meta/project/summary',
     method: 'post',
     data: params
   })
